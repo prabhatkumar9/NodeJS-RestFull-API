@@ -1,0 +1,3 @@
+To import book data into your mongoDB database.
+MAke sure mongoDB is running then = 'mongod'
+run 'mongo bookAPI < booksJSON.js' from the cmd .

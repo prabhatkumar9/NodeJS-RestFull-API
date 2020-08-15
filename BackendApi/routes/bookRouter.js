@@ -13,23 +13,6 @@ function routes(Book) {
         .route("/books") // same url for post and get
         .post(controller.post)
         .get(controller.get)
-    // .post((req, res) => { // post method
-    //     const book = new Book(req.body);
-    //     book.save((err, data) => {
-    //         return res.status(201).json(data);
-    //     });
-    // })
-
-    // .get((req, res) => { // get method
-    //     Book.find((err, data) => {
-    //         if (err) {
-    //             return res.send(err);
-    //         } else {
-    //             return res.json(data);
-    //         }
-    //     });
-    // });
-
 
     // let use middleware
     // this will add some data with req and then pass to the 
@@ -52,16 +35,13 @@ function routes(Book) {
     bookRouter.route("/book/:id")
         .get((req, res) => {
 
-            // now req have book already fetched by using middleware
-            return res.json(req.book);
+            const returnBook = req.book.toJSON();
+            const genre = req.book.genre.replace(' ', '%20');
+            returnBook.links.filterByGenre = `http://${req.headers.host}/api/book/?genre=${genre}`
 
-            // Book.findById(req.params.id, (err, data) => {
-            //     if (err) {
-            //         return res.send(err);
-            //     } else {
-            //         return res.json(data);
-            //     }
-            // });
+            // now req have book already fetched by using middleware
+            return res.json(returnBook);
+
         })
         .put((req, res) => {
             const {

@@ -18,9 +18,17 @@ function bookController(Book) {
     Book.find(query, (err, data) => {
       if (err) {
         return res.send(err);
-      } else {
-        return res.json(data);
       }
+
+      // HATEOAS
+      const returnBooks = data.map((book) => {
+        const newBook = book.toJSON();
+        newBook.links = {};
+        newBook.links.self = `http://${req.headers.host}/api/books${book._id}`;
+        return newBook;
+      });
+
+      return res.json(returnBooks);
     });
   }
 
